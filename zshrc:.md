@@ -24,7 +24,6 @@ esac
 PATH=~/.console-ninja/.bin:$PATH
 #
 #
-#
 # ~/.zshrc
 #
 
@@ -52,12 +51,19 @@ if command -v fastfetch >/dev/null 2>&1; then
 fi
 # --- End Fastfetch ---
 
-# --- Global Rainbow Mode ---
-if command -v lolcat >/dev/null 2>&1; then
-    # Save original stdout
-    exec > >(lolcat) 2>&1
-fi
-# --- End Global Rainbow ---
+# --- Rainbow Output Wrapper (safe check for lolcat) ---
+rainbow() {
+    if command -v lolcat >/dev/null 2>&1; then
+        "$@" | lolcat
+    else
+        "$@"
+    fi
+}
+# Example aliases with rainbow
+alias cat='rainbow cat'
+alias dmesg='rainbow dmesg'
+alias figlet='rainbow figlet'
+# --- End Rainbow ---
 
 export PATH=$PATH:/opt/android-sdk/platform-tools
 export PATH=$PATH:/home/sirius/.spicetify
@@ -71,4 +77,3 @@ esac
 # pnpm end
 
 PATH=~/.console-ninja/.bin:$PATH
-
